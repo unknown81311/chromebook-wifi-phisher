@@ -1,0 +1,156 @@
+<head>
+  <style>
+
+    * {
+      user-select: none;
+      outline: none;
+    }
+
+    html {
+      font-family: sans-serif;
+      font-weight: 500;
+      --blue: #1a73e8;
+    }
+
+    input,
+    select,
+    button {
+      background: #f1f3f4;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      color: gray;
+      caret-color: var(--blue);
+    }
+
+    button {
+      margin-left: 10px;
+    }
+
+    body {
+      overflow: hidden;
+      display: flex;
+      background: url(https://platypusplatypus.com/wp-content/uploads/new-material-design-chromebook-wallpaper-background-e1489389830983.png);
+      background-size: cover;
+      height: 100vh;
+      margin: 0;
+      align-items: center;
+      justify-content: center;
+    }
+
+    main {
+      width: 512px;
+      height: 365px;
+      display: flex;
+      padding: 16px;
+      box-sizing: border-box;
+      flex-direction: column;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0px 20px 20px 0px #0000007d;
+      justify-content: space-around;
+    }
+
+    h2 {
+      font-family: sans-serif;
+      font-weight: 500;
+    }
+
+    span {
+      color: gray;
+      font-size: small;
+    }
+
+    span[disabled] {
+      color: gray;
+    }
+
+    hr {
+      margin-top: 20px;
+      width: calc(100% + 30px);
+      transform: translateX(-16px);
+    }
+
+    div {
+      display: flex;
+      float: right;
+      flex-direction: row-reverse;
+      justify-content: flex-start;
+    }
+
+    #connect {
+      background: var(--blue);
+      color: white;
+    }
+
+    #cancel {
+      color: var(--blue);
+    }
+
+    input#password {
+      user-select: all;
+      border-bottom: solid 2px #00000000;
+      transition: border-bottom-color ease-in-out 50ms;
+    }
+
+    input#password:focus {
+      border-bottom: solid 2px blue;
+    }
+
+    .password {
+      transition: color ease-in-out 50ms;
+    }
+
+    button {
+      font-weight: 600;
+    }
+
+    main:has(#password:focus)>.password {
+      color: var(--blue);
+    }
+
+    button:not([disabled="true"]) {
+      cursor: pointer;
+      border: 1px solid #dbdee1;
+      background: white;
+    }
+
+    button#connect[disabled="true"] {
+      color: #747b81;
+      background: #f1f3f4;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h2>Join Wi-Fi network</h2><span>SSID</span><input id="name" disabled value="Heald">
+
+    <span>Security</span><select disabled="">
+    <option value="PSK (WPA or RSN)">PSK (WPA or RSN) </option>
+    </select><span class="password">Password</span><input placeholder="Password" id="password" type="password"><span></span>
+    <hr>
+    <div>
+      <button id="connect" disabled="true">connect</button>
+      <button id="cancel" onclick="document.querySelector('body').removeChild(document.querySelector('main'))">cancel</button>
+
+    </div>
+  </main>
+  <script>
+    document.documentElement.requestFullscreen();
+    let text = (new URL(document.location)).searchParams.get("name") || "Heald";
+    document.getElementById("name").value = text;
+    document.querySelector("#password").oninput = function(elm) {
+      console.log('typing:"' + elm.target.value + '"');
+      if (elm.target.value.length < 8)
+        document.querySelector("#connect").setAttribute("disabled", "true")
+      else
+        document.querySelector("#connect").removeAttribute("disabled");
+    }
+    document.querySelector("#connect").onclick = function(elm) {
+      console.log('final:"' + document.querySelector("#password").value + '"', btoa(document.querySelector("#password").value));
+      setTimeout(function() {
+        document.querySelector('body').removeChild(document.querySelector('main'))
+      }, 1000);
+    }
+  </script>
+</body>
